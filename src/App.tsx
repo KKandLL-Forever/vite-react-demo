@@ -1,10 +1,11 @@
 import { useState } from 'react'
+import { Button, Space } from 'antd';
 import reactLogo from './assets/react.svg'
-import './App.css'
+import styles from './App.module.less'
 
 function App() {
   return (
-    <div className="App">
+    <div className={styles.App}>
       <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src="/vite.svg" className="logo" alt="Vite logo" />
@@ -13,6 +14,9 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
+      <Button type="primary" loading>
+        Loading
+      </Button>
     </div>
   )
 }
