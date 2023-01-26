@@ -4,6 +4,7 @@ specifiers:
   '@types/node': ^18.11.18
   '@types/react': 17.0.2
   '@types/react-dom': 17.0.2
+  '@types/react-router-dom': ^5.3.3
   '@unocss/preset-attributify': ^0.49.0
   '@unocss/preset-wind': ^0.49.0
   '@unocss/transformer-attributify-jsx': ^0.49.0
@@ -13,6 +14,7 @@ specifiers:
   less: ^4.1.3
   react: 17.0.2
   react-dom: 17.0.2
+  react-router-dom: ^6.7.0
   tailwindcss: ^3.2.4
   typescript: ^4.9.3
   unocss: ^0.49.0
@@ -22,11 +24,13 @@ dependencies:
   antd: 4.24.7_sfoxds7t5ydpegc3knd667wn6m
   react: 17.0.2
   react-dom: 17.0.2_react@17.0.2
+  react-router-dom: 6.7.0_sfoxds7t5ydpegc3knd667wn6m
 
 devDependencies:
   '@types/node': 18.11.18
   '@types/react': 17.0.2
   '@types/react-dom': 17.0.2
+  '@types/react-router-dom': 5.3.3
   '@unocss/preset-attributify': 0.49.0
   '@unocss/preset-wind': 0.49.0
   '@unocss/transformer-attributify-jsx': 0.49.0
@@ -397,6 +401,11 @@ packages:
       react-dom: 17.0.2_react@17.0.2
     dev: false
 
+  /@remix-run/router/1.3.0:
+    resolution: {integrity: sha512-nwQoYb3m4DDpHTeOwpJEuDt8lWVcujhYYSFGLluC+9es2PyLjm+jjq3IeRBQbwBtPLJE/lkuHuGHr8uQLgmJRA==}
+    engines: {node: '>=14'}
+    dev: false
+
   /@rollup/pluginutils/5.0.2:
     resolution: {integrity: sha512-pTd9rIsP92h+B6wWwFbW8RkZv4hiR/xKsqre4SIuAOaOEQRxi0lqLke9k2/7WegC85GgUs9pjmOjCUi3In4vwA==}
     engines: {node: '>=14.0.0'}
@@ -526,6 +535,10 @@ packages:
     resolution: {integrity: sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==}
     dev: true
 
+  /@types/history/4.7.11:
+    resolution: {integrity: sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==}
+    dev: true
+
   /@types/node/18.11.18:
     resolution: {integrity: sha512-DHQpWGjyQKSHj3ebjFI/wRKcqQcdR+MoFBygntYOZytCqNfkd2ZC4ARDJ2DQqhjH5p85Nnd3jhUJIXrszFX/JA==}
     dev: true
@@ -537,6 +550,21 @@ packages:
   /@types/react-dom/17.0.2:
     resolution: {integrity: sha512-Icd9KEgdnFfJs39KyRyr0jQ7EKhq8U6CcHRMGAS45fp5qgUvxL3ujUCfWFttUK2UErqZNj97t9gsVPNAqcwoCg==}
     dependencies:
+      '@types/react': 17.0.2
+    dev: true
+
+  /@types/react-router-dom/5.3.3:
+    resolution: {integrity: sha512-kpqnYK4wcdm5UaWI3fLcELopqLrHgLqNsdpHauzlQktfkHL3npOSwtj1Uz9oKBAzs7lFtVkV8j83voAz2D8fhw==}
+    dependencies:
+      '@types/history': 4.7.11
+      '@types/react': 17.0.2
+      '@types/react-router': 5.1.20
+    dev: true
+
+  /@types/react-router/5.1.20:
+    resolution: {integrity: sha512-jGjmu/ZqS7FjSH6owMcD5qpq19+1RS9DeVRqfl1FeBMxTDQAGwlMWOcs52NDoXaNKyG3d1cYQFMs9rCrb88o9Q==}
+    dependencies:
+      '@types/history': 4.7.11
       '@types/react': 17.0.2
     dev: true
 
@@ -2074,6 +2102,29 @@ packages:
 
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+    dev: false
+
+  /react-router-dom/6.7.0_sfoxds7t5ydpegc3knd667wn6m:
+    resolution: {integrity: sha512-jQtXUJyhso3kFw430+0SPCbmCmY1/kJv8iRffGHwHy3CkoomGxeYzMkmeSPYo6Egzh3FKJZRAL22yg5p2tXtfg==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      '@remix-run/router': 1.3.0
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      react-router: 6.7.0_react@17.0.2
+    dev: false
+
+  /react-router/6.7.0_react@17.0.2:
+    resolution: {integrity: sha512-KNWlG622ddq29MAM159uUsNMdbX8USruoKnwMMQcs/QWZgFUayICSn2oB7reHce1zPj6CG18kfkZIunSSRyGHg==}
+    engines: {node: '>=14'}
+    peerDependencies:
+      react: '>=16.8'
+    dependencies:
+      '@remix-run/router': 1.3.0
+      react: 17.0.2
     dev: false
 
   /react/17.0.2:
