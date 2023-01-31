@@ -1,14 +1,22 @@
-const storagePrefix = 'tm_react_';
+export const storagePrefix = 'tm_react_';
 
 const storage = {
-  getToken: () => {
-    return JSON.parse(window.localStorage.getItem(`${storagePrefix}token`) as string);
+  getItem: (key: string) => {
+    if (key === 'token') {
+      return JSON.parse(window.sessionStorage.getItem(`${ storagePrefix }token`) as string);
+    } else {
+      return JSON.parse(window.sessionStorage.getItem(key) as string)
+    }
   },
-  setToken: (token: string) => {
-    window.localStorage.setItem(`${storagePrefix}token`, JSON.stringify(token));
+  setItem: (key: string,data:string) => {
+    if (key === 'token') {
+      window.sessionStorage.setItem(`${ storagePrefix }token`, JSON.stringify(data));
+    }else {
+      window.sessionStorage.setItem(key, JSON.stringify(data));
+    }
   },
   clearToken: () => {
-    window.localStorage.removeItem(`${storagePrefix}token`);
+    window.sessionStorage.removeItem(`${ storagePrefix }token`);
   },
 };
 

@@ -4,13 +4,15 @@ import Header from "@/components/Header/Header";
 
 function App() {
   return (
-    <div className={styles.App}>
+    <div className="flex flex-col h-full">
       <div
         className="bg-red-400 flex justify-center"
       >
         <Header/>
       </div>
-      <div>
+      <div
+        className='flex justify-between flex-1'
+      >
         <Outlet/>
       </div>
     </div>
