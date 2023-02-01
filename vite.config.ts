@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react-swc'
 import UnoCSS from 'unocss/vite'
 import PresetTailwind from '@unocss/preset-wind'
 import transformerAttributifyJsx from '@unocss/transformer-attributify-jsx'
+import transformerDirectives from '@unocss/transformer-directives'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,6 +13,9 @@ export default defineConfig({
     react(),
     UnoCSS({
       /* options */
+      rules: [
+        ['BigNumberColor', { color: '#3ead91' }]
+      ],
       presets: [
         // 属性化unocss
         presetAttributify(
@@ -21,6 +25,8 @@ export default defineConfig({
         PresetTailwind()
       ],
       transformers: [
+// @ts-ignore
+        transformerDirectives(),
         // tsx/jsx中属性化使用unocss
         transformerAttributifyJsx(),
       ]

@@ -13,6 +13,8 @@ import './main.less'
 import 'virtual:uno.css'
 import App from './App'
 import Boot from '@/store/boot';
+import "@/styles/common.less";
+
 
 import Synthesis from "@/pages/Synthesis/Synthesis";
 import Pollution from "@/pages/Pollution/Pollution";
@@ -50,6 +52,11 @@ const router = createBrowserRouter([
       // },
     ],
   },
+  {
+    path: '/test',
+    element: <Synthesis/>,
+    errorElement: <Page404 />,
+  }
 ]);
 
 const root = document.getElementById('root') as HTMLElement;

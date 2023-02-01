@@ -15,6 +15,7 @@ specifiers:
   '@unocss/preset-attributify': ^0.49.0
   '@unocss/preset-wind': ^0.49.0
   '@unocss/transformer-attributify-jsx': ^0.49.0
+  '@unocss/transformer-directives': ^0.49.1
   '@vitejs/plugin-react-swc': ^3.0.0
   antd: 4.24.7
   axios: ^1.2.4
@@ -46,6 +47,7 @@ dependencies:
   '@reduxjs/toolkit': 1.9.1_3m5k4ry2nwm36zz5ojtujpfkvq
   '@tanstack/react-query': 4.23.0_sfoxds7t5ydpegc3knd667wn6m
   '@types/lodash': 4.14.191
+  '@unocss/transformer-directives': 0.49.1
   antd: 4.24.7_sfoxds7t5ydpegc3knd667wn6m
   axios: 1.2.4
   dayjs: 1.11.7
@@ -1093,6 +1095,10 @@ packages:
     resolution: {integrity: sha512-rnA93tsfqMJ8isrmgh8w48oJZryWdtLQD2JpERwW95xi4WdWWIFozR9xMwvd6xOGOaBhbttak6xdsv4nmCFvIA==}
     dev: true
 
+  /@unocss/core/0.49.1:
+    resolution: {integrity: sha512-l+L1c8eCwfaQA1sAYDE+xJ+r9ocfyTo9KzRUOIy5eV/wxC82HoLtJN8wIGuWaY8fGQh/gT74Czfq7g7BFNKhaw==}
+    dev: false
+
   /@unocss/inspector/0.49.0:
     resolution: {integrity: sha512-VHHr8vdar60jOBpDTh2WcgopBB7yL4XfH40cNX+wy5KhLKdpxKxjE3DqpDNpqzaJia/79KPV3PvMBKMs+6vNUQ==}
     dependencies:
@@ -1182,6 +1188,13 @@ packages:
       '@unocss/core': 0.49.0
       css-tree: 2.3.1
     dev: true
+
+  /@unocss/transformer-directives/0.49.1:
+    resolution: {integrity: sha512-CrhM3x9OuabzHbeTvmxLVvKODSZxYgM9XwV9E+WtYymicfGtn26JkID1Cl1mAfm5VswapaKoQFzbQf5uH5i1YA==}
+    dependencies:
+      '@unocss/core': 0.49.1
+      css-tree: 2.3.1
+    dev: false
 
   /@unocss/transformer-variant-group/0.49.0:
     resolution: {integrity: sha512-Zn9ohvP/+Fxhw/FhMbpn4p8j95lVrPcB/Lco6qy/1Ocd6qEODf7/m2fakX3DTk7e/wGxzGmVcGsQRFdgEYhX8A==}
@@ -1441,7 +1454,6 @@ packages:
     dependencies:
       mdn-data: 2.0.30
       source-map-js: 1.0.2
-    dev: true
 
   /csscolorparser/1.0.3:
     resolution: {integrity: sha512-umPSgYwZkdFoUrH5hIq5kf0wPSXiro51nPw0j2K/c83KflkPSTBGMz6NJvMB+07VlL0y7VPo6QJcDjcgKTTm3w==}
@@ -2079,7 +2091,6 @@ packages:
 
   /mdn-data/2.0.30:
     resolution: {integrity: sha512-GaqWWShW4kv/G9IEucWScBx9G1/vsFZZJUO+tD26M8J8z3Kw5RDQjaoZe03YAClgeS/SWPOcb4nkFBTEi5DUEA==}
-    dev: true
 
   /merge-stream/2.0.0:
     resolution: {integrity: sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==}
@@ -3163,7 +3174,6 @@ packages:
   /source-map-js/1.0.2:
     resolution: {integrity: sha512-R0XvVJ9WusLiqTCEiGCmICCMplcCkIwwR11mOSD9CR5u+IXYdiseeEuXCVAjS54zqwkLcPNnmU4OeJ6tUrWhDw==}
     engines: {node: '>=0.10.0'}
-    dev: true
 
   /source-map/0.6.1:
     resolution: {integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==}

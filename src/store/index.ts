@@ -3,11 +3,11 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import {
   ASYNC_GET_IDS_UNITS,
   BOOT_SLICE,
-  // MAP_SLICE,
+  MAP_SLICE,
   ROOT_SLICE,
   SYNTHESIS_SLICE,
 } from '@/constant'
-// import mapSlice from '@/store/slice/mapSlice'
+import mapSlice from '@/store/slice/mapSlice'
 import synthesisSlice from '@/store/slice/synthesisSlice'
 import bootSlice from '@/store/slice/bootSlice'
 import rootSlice from '@/store/slice/rootSlice'
@@ -16,7 +16,7 @@ const store = configureStore({
   reducer: {
     [BOOT_SLICE]: bootSlice,
     [ROOT_SLICE]: rootSlice,
-    // [MAP_SLICE]: mapSlice,
+    [MAP_SLICE]: mapSlice,
     [SYNTHESIS_SLICE]: synthesisSlice,
   },
   devTools: process.env.NODE_ENV !== 'production',

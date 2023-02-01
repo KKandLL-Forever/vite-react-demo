@@ -13,7 +13,6 @@ import {isNaN} from 'lodash'
 import styles from './Synthesis.module.less';
 import { Pane } from '@/components/Pane'
 import { LeafletMap } from '@/components/LeafletMap'
-// import { isNaN } from '@/utils/structUtil';
 import {
   getPmsList,
   getPmsState,
@@ -29,7 +28,6 @@ import { UpLeftOpts, UpRightOpts, BottomRightOpts, BottomRightOpts2 } from './ec
 import { getEntMapState } from '@/store/slice/synthesisSlice'
 import { RootState } from "@/store";
 import { useAppDispatch, useAppSelector } from "@/store";
-
 
 function Synthesis () {
   const dispatch = useAppDispatch()
@@ -94,7 +92,7 @@ function Synthesis () {
   // console.log(boot,'boot')
   
   return useMemo(() =>
-      <>
+      <div className='flex justify-around h-full'>
         <div className={ styles.withAnimationLeftIn }>
           <Pane>
             {/*左上*/}
@@ -105,28 +103,28 @@ function Synthesis () {
               </div>
               <div className={ styles['topContent-body'] }>
                 <div className={ styles['synLeftTop-data'] }>
-                  <div className={ styles['synLeftTop-data-item'] }>
-                    <div className='flex justify-center'>
+                  <div className='w-full h-full py-[20px] px-[15px] bg-[url(@/assets/img/synthesis/enterprise-border.png)] bg-no-repeat bg-[length:100%_100%]'>
+                    <div className='flex justify-center items-baseline'>
                       <span>收录企业</span>
-                      <span>{ synthesis.enterprise.ent_total ?? 0 }</span>家
+                      <span className='custom-big-number'>{ synthesis.enterprise.ent_total ?? 0 }</span>家
                     </div>
                   </div>
-                  <div className={ styles['synLeftTop-data-item'] }>
-                    <div className='flex justify-center'>
+                  <div className='w-full h-full py-[20px] px-[15px] bg-[url(@/assets/img/synthesis/enterprise-border.png)] bg-no-repeat bg-[length:100%_100%]'>
+                    <div className='flex justify-center items-baseline'>
                       <span>废气监控</span>
-                      <span>{ synthesis.enterprise.air_total ?? 0 }</span>个
+                      <span className='custom-big-number'>{ synthesis.enterprise.air_total ?? 0 }</span>个
                     </div>
                   </div>
-                  <div className={ styles['synLeftTop-data-item'] }>
-                    <div className='flex justify-center'>
+                  <div className='w-full h-full py-[20px] px-[15px] bg-[url(@/assets/img/synthesis/enterprise-border.png)] bg-no-repeat bg-[length:100%_100%]'>
+                    <div className='flex justify-center items-baseline'>
                       <span>废水监控</span>
-                      <span>{ synthesis.enterprise.water_total ?? 0 }</span>个
+                      <span className='custom-big-number'>{ synthesis.enterprise.water_total ?? 0 }</span>个
                     </div>
                   </div>
-                  <div className={ styles['synLeftTop-data-item'] }>
-                    <div className='flex justify-center'>
+                  <div className='w-full h-full py-[20px] px-[15px] bg-[url(@/assets/img/synthesis/enterprise-border.png)] bg-no-repeat bg-[length:100%_100%]'>
+                    <div className='flex justify-center items-baseline'>
                       <span>治污监控</span>
-                      <span>{ synthesis.enterprise.facility_total ?? 0 }</span>个
+                      <span className='custom-big-number'>{ synthesis.enterprise.facility_total ?? 0 }</span>个
                     </div>
                   </div>
                 </div>
@@ -223,7 +221,7 @@ function Synthesis () {
             </div>
           </Pane>
         </div>
-      </>
+      </div>
     , [synthesis])
 }
 
