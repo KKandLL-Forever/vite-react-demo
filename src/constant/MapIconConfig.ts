@@ -49,7 +49,7 @@ const basicConfig:IBasicConfigData = {
   // 是否需要变大
   isBig: false,
   // mark图源地址，public文件夹内
-  iconUrl: '/imc/map/enterprise.svg',
+  iconUrl: '/enterprise.svg',
   // 坐标数组，数据内的lat，lng组成。[lat,lng]
   position: [],
 }
@@ -59,7 +59,7 @@ export const Synthesis_Enterprise_Icon:ISynthesisEnterpriseIcon = {
   // mark类型
   isEnterprise: true,
   needReloadMark: true,
-  iconUrl: '/imc/map/enterprise.svg',
+  iconUrl: '/enterprise.svg',
 }
 
 export const Synthesis_Enterprise_Big_Icon:ISynthesisEnterpriseBigIcon = {
@@ -68,14 +68,14 @@ export const Synthesis_Enterprise_Big_Icon:ISynthesisEnterpriseBigIcon = {
   isEnterprise: true,
   needReloadMark: true,
   isBig: true,
-  iconUrl: '/imc/map/enterprise.svg',
+  iconUrl: '/enterprise.svg',
 }
 
 export const  Synthesis_waterStation_Icon:ISynthesisWaterStationIcon = {
   ...basicConfig,
   // mark类型
   isWaterStation: true,
-  iconUrl: '/imc/map/water.svg',
+  iconUrl: '/water.svg',
 }
 
 export const Pollution_Air_Icon:IPollutionAirIcon = {
@@ -83,14 +83,14 @@ export const Pollution_Air_Icon:IPollutionAirIcon = {
   // mark类型
   isPollutionAir: true,
   isSubPoints: true,
-  iconUrl: '/imc/map/pollution-air.svg',
+  iconUrl: '/pollution-air.svg',
 }
 
 export const Pollution_Air_Alarm_Icon:IPollutionAirAlarmIcon = {
   ...basicConfig,
   // mark类型
   isPollutionAir: true,
-  iconUrl: '/imc/map/pollution-air-alarm.svg',
+  iconUrl: '/pollution-air-alarm.svg',
 }
 
 export const Pollution_Water_Icon:IPollutionWaterIcon = {
@@ -98,14 +98,14 @@ export const Pollution_Water_Icon:IPollutionWaterIcon = {
   // mark类型
   isPollutionWater: true,
   isSubPoints: true,
-  iconUrl: '/imc/map/pollution-water.svg',
+  iconUrl: '/pollution-water.svg',
 }
 
 export const Pollution_Water_Alarm_Icon:IPollutionWaterAlarmIcon = {
   ...basicConfig,
   // mark类型
   isPollutionWater: true,
-  iconUrl: '/imc/map/pollution-water-alarm.svg',
+  iconUrl: '/pollution-water-alarm.svg',
 }
 
 export const Pollution_Facility_Icon:IPollutionFacilityIcon = {
@@ -113,5 +113,5 @@ export const Pollution_Facility_Icon:IPollutionFacilityIcon = {
   // mark类型
   isPollutionFacility: true,
   isSubPoints: true,
-  iconUrl: '/imc/map/facility.svg',
+  iconUrl: '/facility.svg',
 }

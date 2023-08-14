@@ -1,13 +1,18 @@
+type TCenter = {
+  axis: [number, number],
+  zoom: number
+}
 // 南城中心点坐标
-export const NANCHENG_CENTER = {
+export const NANCHENG_CENTER:TCenter = {
   axis: [27.554329375563494, 116.64980226978534],
   zoom: 11
 }
-export const WATER_CENTER = {
+
+export const WATER_CENTER:TCenter = {
   axis: [27.534329375563494, 116.65980226978534],
   zoom: 11
 }
-export const POLLUTION_CENTER = {
+export const POLLUTION_CENTER:TCenter = {
   axis: [27.534329375563494, 116.57980226978534],
   zoom: 11
 }

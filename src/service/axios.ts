@@ -56,7 +56,7 @@ export const axios = createAxiosInstance(API_URL)
 
 export default <T = any>(url:string,data?:any,config?: AxiosRequestConfig) => {
   return axios.post(url, data, config).then(res => {
-    console.log(res,'axios res')
+    // console.log(res,'axios res')
     return (res.data.data || res.data) as T
   })
 }

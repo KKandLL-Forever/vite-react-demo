@@ -19,15 +19,13 @@ import {
   getSynthesisEnterprise,
   getWaste,
   getWms,
-  InitialState
 } from '@/store/slice/synthesisSlice'
 import { setModule } from '@/store/slice/rootSlice';
 // eslint-disable-next-line no-unused-vars
 import { BOOT_SLICE, SYNTHESIS_SLICE } from '@/constant'
 import { UpLeftOpts, UpRightOpts, BottomRightOpts, BottomRightOpts2 } from './echartsConfig';
 import { getEntMapState } from '@/store/slice/synthesisSlice'
-import { RootState } from "@/store";
-import { useAppDispatch, useAppSelector } from "@/store";
+import { RootState, useAppDispatch, useAppSelector} from "@/store";
 
 function Synthesis () {
   const dispatch = useAppDispatch()
@@ -35,7 +33,7 @@ function Synthesis () {
   const chartRef = useRef<EChartsInstance>(null)
   // const boot = useSelector(state => state[BOOT_SLICE])
   useEffect(() => {
-    dispatch(setModule('synthesis'))
+    dispatch(setModule("synthesis"))
   }, [])
   useEffect(() => {
     dispatch(getSynthesisEnterprise('/imc/comprehensive/enterprise'))
@@ -92,7 +90,7 @@ function Synthesis () {
   // console.log(boot,'boot')
   
   return useMemo(() =>
-      <div className='flex justify-around h-full'>
+      <div className='flex justify-around h-full items-stretch WholeBackground'>
         <div className={ styles.withAnimationLeftIn }>
           <Pane>
             {/*左上*/}
@@ -173,7 +171,7 @@ function Synthesis () {
             </div>
           </Pane>
         </div>
-        {/*<LeafletMap/>*/}
+        <LeafletMap/>
         <div className={ styles.withAnimationRightIn }>
           <Pane>
             <div slot='header' className={ classnames(styles.topContent, styles.synRightTop) }>

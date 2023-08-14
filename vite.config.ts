@@ -14,7 +14,8 @@ export default defineConfig({
     UnoCSS({
       /* options */
       rules: [
-        ['BigNumberColor', { color: '#3ead91' }]
+        ['BigNumberColor', { color: '#3ead91' }],
+        ['WholeBackground', {'background-color': '#061326'}]
       ],
       presets: [
         // 属性化unocss

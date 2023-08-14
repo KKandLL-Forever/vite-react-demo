@@ -6,11 +6,14 @@ import {
   MAP_SLICE,
   ROOT_SLICE,
   SYNTHESIS_SLICE,
+  POLLUTION_SLICE
 } from '@/constant'
 import mapSlice from '@/store/slice/mapSlice'
 import synthesisSlice from '@/store/slice/synthesisSlice'
 import bootSlice from '@/store/slice/bootSlice'
 import rootSlice from '@/store/slice/rootSlice'
+import pollutionSlice from "@/store/slice/pollutionSlice";
+
 
 const store = configureStore({
   reducer: {
@@ -18,6 +21,7 @@ const store = configureStore({
     [ROOT_SLICE]: rootSlice,
     [MAP_SLICE]: mapSlice,
     [SYNTHESIS_SLICE]: synthesisSlice,
+    [POLLUTION_SLICE]: pollutionSlice
   },
   devTools: process.env.NODE_ENV !== 'production',
   middleware: (getDefaultMiddleware) =>

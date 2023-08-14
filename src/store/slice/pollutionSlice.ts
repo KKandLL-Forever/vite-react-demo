@@ -16,30 +16,28 @@ import { convertAxis } from '@/utils/structUtil'
 
 export const getEnterprise = createAsyncThunk(
   GET_ENTERPRISE,
-  payload => {
-    return request('/imc/pollution/map/enterprise', {id: payload}).then(res => res.data)
+  async payload => {
+    return await request('/imc/pollution/map/enterprise', {id: payload})
   }
 )
 export const getMonitorEnterprise = createAsyncThunk(
   GET_MONITOR_ENTERPRISE,
-  payload => {
-    return request('/imc/pollution/monitor/enterprise', {id: payload}).then(res => {
-      const { data } = res
-      const xData = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24']
-      const seriesData = ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']
-      data.history.forEach(item => {
-        xData.forEach((x,index) => {
-          if(x === item.date){
-            seriesData[index] = item.total
-          }
-        })
+  async payload => {
+    const data = await request('/imc/pollution/monitor/enterprise', {id: payload})
+    const xData = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24']
+    const seriesData = ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']
+    data.history.forEach(item => {
+      xData.forEach((x,index) => {
+        if(x === item.date){
+          seriesData[index] = item.total
+        }
       })
-      return {
-        xData,
-        seriesData,
-        current:data.current
-      }
     })
+    return {
+      xData,
+      seriesData,
+      current:data.current
+    }
   }
 )
 export const getEnterpriseList = createAsyncThunk(

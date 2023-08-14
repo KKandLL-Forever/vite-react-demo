@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactDOM from 'react-dom'
 import {
   createBrowserRouter,
@@ -9,13 +8,14 @@ import zhCN from 'antd/es/locale/zh_CN';
 import { Provider } from 'react-redux';
 import store from './store'
 
+import '@/styles/leaflet-custom.css';
 import './main.less'
 import 'virtual:uno.css'
 import App from './App'
 import Boot from '@/store/boot';
 import "@/styles/common.less";
-
-
+//
+//
 import Synthesis from "@/pages/Synthesis/Synthesis";
 import Pollution from "@/pages/Pollution/Pollution";
 import Water from "@/pages/Water/Water";
@@ -23,6 +23,10 @@ import Solid from "@/pages/Solid/Solid";
 // import L7Map from "@/components/L7Map/L7Map";
 
 import Page404 from "@/pages/ErrorPages/404";
+import { vec2, vec3 } from '@antv/matrix-util';
+
+let xxx = vec2.add([1,2],[3,4],[4,5])
+console.log(xxx,'xxxxxxx')
 
 const router = createBrowserRouter([
   {
@@ -30,10 +34,10 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <Page404 />,
     children: [
-      {
-        path: "imc",
-        element: <Synthesis/>,
-      },
+      // {
+      //   path: "imc",
+      //   element: <Synthesis/>,
+      // },
       {
         path: "pollution",
         element: <Pollution/>,
@@ -73,3 +77,46 @@ ReactDOM.render(
   <RootApp/>,
   root
 )
+
+
+
+
+// import React from 'react';
+// import type { TabsProps } from 'antd';
+// import { Tabs } from 'antd';
+//
+// const {TabPane} = Tabs
+//
+// const onChange = (key: string) => {
+//   console.log(key);
+// };
+//
+// const items: TabsProps['items'] = [
+//   {
+//     key: '1',
+//     label: `Tab 1`,
+//   },
+//   {
+//     key: '2',
+//     label: `Tab 2`,
+//   },
+//   {
+//     key: '3',
+//     label: `Tab 3`,
+//   },
+// ];
+//
+// const App: React.FC = () =>
+//   <Tabs defaultActiveKey="1" items={items} onChange={onChange}>
+//     <TabPane>
+//       123
+//     </TabPane>
+//   </Tabs>;
+//
+// export default App;
+
+// const root = document.getElementById('root') as HTMLElement;
+// ReactDOM.render(
+//   <App/>,
+//   root
+// )

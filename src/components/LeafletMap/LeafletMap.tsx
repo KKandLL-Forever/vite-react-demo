@@ -8,13 +8,15 @@ import {
   useMapEvent,
 } from 'react-leaflet'
 import { Tabs, Menu, Empty, Select } from 'antd';
-import { useDispatch, useSelector } from 'react-redux'
 import classnames from 'classnames'
 import { AlertFilled } from '@ant-design/icons'
 import { isEmpty } from 'lodash'
 // @ts-ignore
 import { v4 as uuidv4 } from 'uuid'
 // import {CRS} from 'leaflet';
+import { Map as LeafletMapType } from "leaflet";
+import type {GeoJsonObject} from 'geojson'
+import type { SelectProps } from 'antd';
 
 import styles from './LeafletMap.module.less'
 import { Modal } from '@/components/Modal';
@@ -48,29 +50,36 @@ import {
 import { getEnterprise, getMonitorEnterprise, resetEnterprise } from '@/store/slice/pollutionSlice'
 import { transferType } from '@/utils/structUtil'
 import nancheng from './nancheng-geoJson.json';
+import { RootState, useAppDispatch, useAppSelector} from "@/store";
+import {
+  IEntMapPointsFetchData,
+  InitialStateData,
+  TAirItem,
+  TEntItem,
+  TOptionsItem, TPmsMapPointsItem, TWmsItem
+} from "@/store/types/mapTypes";
 
 // 修改leaflet默认的图标
 // 图标必须放在public文件夹下
 Object.assign(L.Icon.Default.prototype.options, {
-  iconUrl: '/imc/map/enterprise.svg',
+  iconUrl: '/enterprise.svg',
   iconSize: [30],
   shadowUrl: ''
 })
 
 function LeafletMap () {
-  const leafletMap = useSelector(state => state[MAP_SLICE])
-  const root = useSelector(state => state[ROOT_SLICE])
-  const boot = useSelector(state => state[BOOT_SLICE])
-  const pollution = useSelector(state => state[POLLUTION_SLICE])
-  const synthesis = useSelector(state => state[SYNTHESIS_SLICE])
-  const dispatch = useDispatch()
-  const rootSubmenuKeys = pollution.enterpriseList.map(item => item.key);
-  const [list, setList] = useState([])
-  const [openKeys, setOpenKeys] = useState(['menu1']);
-  const mapRef = useRef(null)
-  const [video, setVideoUrl] = useState({url: ''})
-  const [waterVideo, setWaterVideoUrl] = useState({url: ''})
-  const [statistics, setStatistics] = useState({})
+  const leafletMap = useAppSelector((state:RootState) => state[MAP_SLICE])
+  const root = useAppSelector((state:RootState) => state[ROOT_SLICE])
+  const boot = useAppSelector((state:RootState) => state[BOOT_SLICE])
+  const pollution = useAppSelector((state:RootState) => state[POLLUTION_SLICE])
+  const synthesis = useAppSelector((state:RootState) => state[SYNTHESIS_SLICE])
+  const dispatch = useAppDispatch()
+  // const rootSubmenuKeys = pollution.enterpriseList.map(item => item.key);
+  const [list, setList] = useState<InitialStateData['mapPoints']>([])
+  const mapRef = useRef<LeafletMapType| null>(null)
+  const [video, setVideoUrl] = useState<{url: string,name: string}>({url: '',name: ''})
+  const [waterVideo, setWaterVideoUrl] = useState<{url: string, name:string}>({url: '', name:''})
+  const [statistics, setStatistics] = useState<IEntMapPointsFetchData['state']>({} as IEntMapPointsFetchData['state'])
   
   useEffect(() => {
     dispatch(getMapPoints(root.module))
@@ -78,67 +87,60 @@ function LeafletMap () {
   useEffect(() => setList([...leafletMap.mapPoints, ...leafletMap.subPoints]), [leafletMap.mapPoints, leafletMap.subPoints])
   useEffect(() => {
     if (root.module === 'water') {
-      mapRef.current.setView(WATER_CENTER.axis, WATER_CENTER.zoom)
+      (mapRef.current as LeafletMapType).setView(WATER_CENTER.axis, WATER_CENTER.zoom)
     } else if (root.module === 'synthesis') {
-      mapRef.current.setView(NANCHENG_CENTER.axis, NANCHENG_CENTER.zoom)
+      (mapRef.current as LeafletMapType).setView(NANCHENG_CENTER.axis, NANCHENG_CENTER.zoom)
     } else if (root.module === 'pollution') {
-      mapRef.current.setView(POLLUTION_CENTER.axis, POLLUTION_CENTER.zoom)
+      (mapRef.current as LeafletMapType).setView(POLLUTION_CENTER.axis, POLLUTION_CENTER.zoom)
     }
   }, [root.module])
   
-  function LocationMarker () {
-    const map = useMapEvent('click', e => {
-      // console.log(e)
-      map.setView(e.latlng)
-    })
-    return null
-  }
-  
-  function handleAlarmIcon (type, item, isAlarm) {
+  function handleAlarmIcon (type:string, item:TEntItem | TWmsItem | TPmsMapPointsItem, isAlarm:boolean) {
     item.isAlarming = isAlarm
     switch (type) {
       case 'ent':
         return {
           ...item,
           isBig: isAlarm,
-          iconUrl: `/imc/map/enterprise${ isAlarm ? '-alarm' : '' }.svg`,
+          iconUrl: `/enterprise${ isAlarm ? '-alarm' : '' }.svg`,
           renderId: uuidv4()
         }
       case 'waterStation':
         return {
           ...item,
           isBig: isAlarm,
-          iconUrl: `/imc/map/water${ isAlarm ? '-alarm' : '' }.svg`,
+          iconUrl: `/water${ isAlarm ? '-alarm' : '' }.svg`,
           renderId: uuidv4()
         }
       case 'pollution-air-alarm':
         return {
           ...item,
           isBig: isAlarm,
-          iconUrl: `/imc/map/pollution-air${ isAlarm ? '-alarm' : '' }.svg`,
+          iconUrl: `/pollution-air${ isAlarm ? '-alarm' : '' }.svg`,
           renderId: uuidv4()
         }
       case 'pollution-water-alarm':
         return {
           ...item,
           isBig: isAlarm,
-          iconUrl: `/imc/map/pollution-water${ isAlarm ? '-alarm' : '' }.svg`,
+          iconUrl: `/pollution-water${ isAlarm ? '-alarm' : '' }.svg`,
           renderId: uuidv4()
         }
       case 'facility-alarm':
         return {
           ...item,
           isBig: isAlarm,
-          iconUrl: `/imc/map/facility${ isAlarm ? '-alarm' : '' }.svg`,
+          iconUrl: `/facility${ isAlarm ? '-alarm' : '' }.svg`,
           renderId: uuidv4()
         }
       default:
-        return
+        return item
     }
   }
   
-  function handleAlarmingPoints (pre, alarmingPoints) {
-    let newArr = []
+  function handleAlarmingPoints (pre:InitialStateData['mapPoints'], alarmingPoints:string[]) {
+    let newArr: Array<TEntItem | TWmsItem | TPmsMapPointsItem> = []
+    if (!pre) return []
     pre.forEach(p => {
       let found = alarmingPoints.find(points => points === p.id.toString())
       if (found) {
@@ -176,41 +178,12 @@ function LeafletMap () {
   
   useEffect(() => {
     setList(pre => {
-      return handleAlarmingPoints(pre, synthesis.alarmingPoints) ?? []
+      return handleAlarmingPoints(pre, synthesis.alarmingPoints as string[]) ?? []
     })
   }, [synthesis.alarmingPoints])
   useEffect(() => {
-    setList(pre => {
-      return handleAlarmingPoints(pre, pollution.alarmingPoints) ?? []
-    })
-  }, [pollution.alarmingPoints])
-  useEffect(() => {
-    setStatistics(leafletMap.statistics)
+    setStatistics(leafletMap.statistics as IEntMapPointsFetchData['state'])
   }, [leafletMap.statistics])
-  const onOpenChange = (keys) => {
-    console.log('onOpenChange')
-    const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
-    if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
-      setOpenKeys(keys);
-    } else {
-      setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
-    }
-  };
-  
-  function handleMenuSelect ({item}) {
-    const map = mapRef.current
-    const {id, lat, lng} = item.props
-    map.flyTo([lat - 0.001, lng - 0.0005], 18, {duration: 0.15})
-    // 污染源企业概况&手续情况
-    dispatch(getEnterprise(id))
-    // 检测情况&视频监控
-    dispatch(getMonitorEnterprise(id))
-    // 监测点位数据
-    dispatch(getMonitorLatest(id))
-    // Modal
-    dispatch(showPollutionWaterModal(true))
-    dispatch(setSingle(true))
-  }
   
   function entCancel () {
     // 关闭企业Modal
@@ -218,8 +191,7 @@ function LeafletMap () {
     // 取消single模式
     dispatch(setSingle(false))
     // 重新设定map视图
-    const map = mapRef.current
-    // map.setView(NANCHENGCENTER, 13)
+    const map = mapRef.current as LeafletMapType
     map.flyTo(NANCHENG_CENTER.axis, NANCHENG_CENTER.zoom, {duration: 0.15})
     // 置空store中的企业数据（entInfo）
     dispatch(resetEntInfo({}))
@@ -235,34 +207,23 @@ function LeafletMap () {
     dispatch(showWaterModal(false))
     dispatch(setSingle(false))
     // map relocate
-    const map = mapRef.current
+    const map = mapRef.current as LeafletMapType
     map.setView(NANCHENG_CENTER.axis, NANCHENG_CENTER.zoom, {duration: 0.15})
-  }
-  
-  function pollutionWaterCancel () {
-    // close Modal
-    dispatch(showPollutionWaterModal(false))
-    dispatch(setSingle(false))
-    // map relocate
-    const map = mapRef.current
-    map.setView(NANCHENG_CENTER.axis, NANCHENG_CENTER.zoom, {duration: 0.15})
-    // 置空store中的数据（enterprise）
-    dispatch(resetEnterprise({products: []}))
   }
   
   function waterQualityTransfer () {
     // console.log(boot.idTable.name(data),'test')
   }
   
-  function onCameraSelect (value, opts) {
+  function onCameraSelect (value:string, opts:TOptionsItem) {
     setVideoUrl(() => ({...video, ...{url: value, name: opts.label}}))
   }
   
-  function onWaterStationCameraSelect (value, opts) {
+  function onWaterStationCameraSelect (value:string, opts:TOptionsItem) {
     setWaterVideoUrl(() => ({...video, ...{url: value, name: opts.label}}))
   }
   
-  function isTabAlarming (tabData) {
+  function isTabAlarming (tabData:Array<TAirItem>) {
     if (isEmpty(tabData)) return false
     let found = tabData.find(t => (t.alarm === 2) || (t.alarm === 1))
     if (found) {
@@ -273,23 +234,11 @@ function LeafletMap () {
   }
   
   function onTabFly () {
-    mapRef.current.flyTo([27.554329375563494, 116.64980226978534], 18, {duration: 0.15})
+    const map = mapRef.current as LeafletMapType
+    map.flyTo([27.554329375563494, 116.64980226978534], 18, {duration: 0.15})
   }
-  
-  // function onClickShowMarker () {
-  //   const map = mapRef.current
-  //   if (!map) {
-  //     return
-  //   }
-  //   map.flyTo([34.169518387904084, 121.41377449035646], 13)
-  //   const marker = markerRef.current
-  //   if (marker) {
-  //     marker.openPopup()
-  //   }
-  // }
-  
   // console.log(pollution, "pollution")
-  // console.log(leafletMap, 'leafletMap')
+  console.log(leafletMap, 'leafletMap')
   
   return useMemo(() =>
       <div className={ styles.LeafletMap } id='leafletMap'>
@@ -332,22 +281,6 @@ function LeafletMap () {
           </div>
         
         </div>
-        {/*污染源企业列表浮窗*/ }
-        <div
-          className={ styles.pollutionFloat }
-          style={ root.module === 'pollution' ? {display: 'flex'} : {display: 'none'} }
-        >
-          <div className={ styles['transparent-title'] }></div>
-          <div className={ classnames(styles['pollutionFloat-body'], styles.scrollStyle) }>
-            <Menu
-              mode='inline'
-              openKeys={ openKeys }
-              onOpenChange={ onOpenChange }
-              onSelect={ handleMenuSelect }
-              items={ pollution.enterpriseList }
-            />
-          </div>
-        </div>
         <MapContainer
           className={ styles.map }
           // crs={CRS.EPSG4326}
@@ -355,6 +288,7 @@ function LeafletMap () {
           zoom={ root.module === 'water' ? WATER_CENTER.zoom : NANCHENG_CENTER.zoom }
           scrollWheelZoom={ true }
           doubleClickZoom={ false }
+          //@ts-ignore
           whenReady={ (map) => {
             mapRef.current = map.target
           } }
@@ -376,8 +310,7 @@ function LeafletMap () {
           {/*/>*/ }
           
           <MarkerList list={ list }/>
-          {/*<LocationMarker/>*/ }
-          <GeoJSON data={ nancheng }></GeoJSON>
+          <GeoJSON data={ nancheng as GeoJsonObject }></GeoJSON>
         </MapContainer>
         {/*点击企业的浮窗*/ }
         <Modal
@@ -479,18 +412,6 @@ function LeafletMap () {
               onSelect={ onCameraSelect }
             />
             <div className={ styles['video-body'] }>
-              <live-player
-                video-url={ video.url }
-                fluent={ true }
-                live={ true }
-                controls={ true }
-                loading={ true }
-                // stretch={ true }
-                show-custom-button={ false }
-                hide-big-play-button={ true }
-                hide-fluent-button={ true }
-                hide-snapshot-button={ true }
-              />
             </div>
             {/*<img src={ videoImg } alt='' width='100%'/>*/ }
           </div>
@@ -532,8 +453,7 @@ function LeafletMap () {
               <div className={ styles.waterQuality }>
                 <div>水质类别：</div>
                 <div>
-                  Ⅰ 类 { waterQualityTransfer(leafletMap?.waterInfo?.point?.metadata?.water_cate) }
-                  { waterQualityTransfer(leafletMap?.waterInfo?.point?.metadata?.water_functional_level) }
+                  Ⅰ 类
                 </div>
               </div>
             </div>
@@ -542,7 +462,7 @@ function LeafletMap () {
                 leafletMap.waterInfo?.latest?.length > 0
                   ? leafletMap.waterInfo?.latest.map(() =>
                     <div className={ styles.item }>
-                      <center>总磷</center>
+                      <div className='flex justify-center'>总磷</div>
                       <div>335.99</div>
                       <div>ug/L</div>
                     </div>)
@@ -566,85 +486,12 @@ function LeafletMap () {
               onSelect={ onWaterStationCameraSelect }
             />
             <div className={ styles['video-body'] }>
-              <live-player
-                video-url={ waterVideo.url }
-                fluent={ true }
-                live={ true }
-                controls={ true }
-                loading={ true }
-                // stretch={ true }
-                show-custom-button={ false }
-                hide-big-play-button={ true }
-                hide-fluent-button={ true }
-                hide-snapshot-button={ true }
-              />
+
             </div>
           </div>
-        </Modal>
-        {/*点击废气废水的浮窗*/ }
-        <Modal
-          show={ leafletMap.pollutionWaterShow }
-          // show={ true }
-          onCancel={ pollutionWaterCancel }
-        >
-          <div slot='title'>
-            <div className={ styles.mainTitle }>
-              { leafletMap.monitorLatest?.point?.metadata?.enterprise_name ?? '暂无数据' }
-            </div>
-            <div className={ styles.subTitle }>
-              { leafletMap.monitorLatest?.point?.metadata?.point_location ?? '暂无数据' }
-            </div>
-          </div>
-          <div slot='default' className={ styles.waterPollutionDefault }>
-            <div className={ styles.infoWrap }>
-              <div className={ styles.info }>
-                <div className={ styles.infoItem }>
-                  <span>监测点名称：</span>
-                  <span className={ styles.waterCate }>
-                  { leafletMap.monitorLatest?.point?.name ?? '暂无数据' }
-                </span>
-                </div>
-                <div className={ styles.infoItem }>
-                  <span>监测类型：</span>
-                  <span>{ transferType(leafletMap.monitorLatest?.point?.type) }</span>
-                </div>
-                <div className={ styles.infoItem }>
-                  <span>数采仪MN码：</span>
-                  <span>{ leafletMap.monitorLatest?.facility?.key ?? '暂无数据' }</span>
-                </div>
-              </div>
-              <div className={ styles.pointState }>
-                <div>点位状态：</div>
-                <div>
-                  <img src={ leafletMap.monitorLatest.point.alarm === 0 ? pointNormal : pointAlarm } alt=''/>
-                  <span>{ leafletMap.monitorLatest.point.alarm === 0 ? '正常' : '报警' }</span>
-                </div>
-              </div>
-            </div>
-            <div className={ styles.chemical }>
-              {
-                leafletMap.monitorLatest?.latest[0]?.data?.length > 0
-                  ? leafletMap.monitorLatest?.latest[0]?.data.map(item =>
-                    <div
-                      className={
-                        item.alert_severity === 2
-                          ? styles['item-alarm']
-                          : item.alert_severity === 1
-                            ? styles['item-preAlarm']
-                            : styles.item
-                      }>
-                      <center>{ item.pollutant_name }</center>
-                      <div>{ item.data_avg }</div>
-                      <div>{ boot.unitTable.name(item.data_unit) }</div>
-                    </div>)
-                  : <Empty image={ noData } imageStyle={ {height: 60,} }/>
-              }
-            </div>
-          </div>
-        
         </Modal>
       </div>
-    , [leafletMap, pollution.enterpriseList, list, root.module, openKeys, video])
+    , [leafletMap, pollution.enterpriseList, list, root.module, video])
 }
 
 export default LeafletMap
