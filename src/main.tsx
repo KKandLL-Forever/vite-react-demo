@@ -20,13 +20,12 @@ import Synthesis from "@/pages/Synthesis/Synthesis";
 import Pollution from "@/pages/Pollution/Pollution";
 import Water from "@/pages/Water/Water";
 import Solid from "@/pages/Solid/Solid";
+import G6Test from "@/pages/G6/G6Test";
+import Charts from '@/pages/Charts/Charts'
 // import L7Map from "@/components/L7Map/L7Map";
 
 import Page404 from "@/pages/ErrorPages/404";
-import { vec2, vec3 } from '@antv/matrix-util';
 
-let xxx = vec2.add([1,2],[3,4],[4,5])
-console.log(xxx,'xxxxxxx')
 
 const router = createBrowserRouter([
   {
@@ -49,6 +48,14 @@ const router = createBrowserRouter([
       {
         path: "solid",
         element: <Solid/>,
+      },
+      {
+        path: "g6",
+        element: <G6Test/>,
+      },
+      {
+        path: "charts",
+        element: <Charts/>,
       },
       // {
       //   path: "map",
