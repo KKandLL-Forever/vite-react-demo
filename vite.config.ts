@@ -42,7 +42,8 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       less: {
-        javascriptEnabled: true
+        javascriptEnabled: true,
+        math: 'always'
       }
     }
   }

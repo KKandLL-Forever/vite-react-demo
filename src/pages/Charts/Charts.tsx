@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Flowchart } from '@ant-design/flowchart';
-import "@ant-design/flowchart/dist/index.css"
 
 const IndicatorNode = (props) => {
   const { size = { width: 120, height: 50 }, data } = props;
