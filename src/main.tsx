@@ -10,6 +10,8 @@ import store from './store'
 
 import '@/styles/leaflet-custom.css';
 import './main.less'
+import '~antd/dist/antd.less';
+// import "@ant-design/flowchart/dist/index.css";
 import 'virtual:uno.css'
 import App from './App'
 import Boot from '@/store/boot';
